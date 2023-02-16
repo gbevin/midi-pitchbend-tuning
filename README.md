@@ -2,7 +2,7 @@ Small project to output tuning tables for MIDI pitch bend.
 
 This will generate .csv files in your current directory.
 
-Make sure you have Java JRE installed with at least version 17.
+Make sure you have at least Java JDK 17 installed.
 
 Execute with:
 
