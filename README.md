@@ -7,7 +7,7 @@ Make sure you have at least Java JDK 17 installed.
 Execute with:
 
 ```shell
-./gradlew run
+./bld compile run
 ```
 
 You'll see the tables as CSV files in your current directory:
