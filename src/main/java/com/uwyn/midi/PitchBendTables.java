@@ -27,7 +27,7 @@ public class PitchBendTables {
     }
 
     private static String pitchBendTableFor(long rangeCU) {
-        var out = new StringBuilder("Offset in HCU,PB MIDI1,PB Hex MIDI2,𝚫PB MIDI1,Pitch from MIDI1,PB MIDI2,PB Hex MIDI2,𝚫PB MIDI2,Pitch from MIDI2\n");
+        var out = new StringBuilder("Offset in HCU,PB MIDI1,PB Hex MIDI2,Delta PB MIDI1,Pitch from MIDI1,PB MIDI2,PB Hex MIDI2,Delta PB MIDI2,Pitch from MIDI2\n");
         long last_pb1 = 0;
         long last_pb2 = 0;
         for (long offset_cu = -rangeCU; offset_cu <= rangeCU; ++offset_cu) {
