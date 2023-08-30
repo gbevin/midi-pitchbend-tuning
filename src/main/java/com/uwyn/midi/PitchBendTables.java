@@ -82,17 +82,17 @@ public class PitchBendTables {
 
     /**
      * This calculates pitch according to the formula:
-     * {@code pitchSense * max(((pitchBendValue - 0x2000) / 0x1FFF),-1))}
+     * {@code pitchSense * max((pitchBendValue - 0x2000) / 0x1FFF,-1))}
      * <p>
      * However, in order to not use floating point match, the formula has been
      * rearranged to:
-     * {@code max((pitchSense * (pitchBendValue - 0x2000) / 0x1FFF), -pitchSense)}
+     * {@code max(pitchSense * (pitchBendValue - 0x2000) / 0x1FFF, -pitchSense)}
      * <p>
      * In order to not have to use floating point math, pitch range
      * is expressed in cents.
      */
     public static long calcPitchMIDI1(long pitchBendValue, long pitchSenseCU) {
-        return max((pitchSenseCU * (pitchBendValue - 0x2000L) / 0x1FFFL), -pitchSenseCU);
+        return max(pitchSenseCU * (pitchBendValue - 0x2000L) / 0x1FFFL, -pitchSenseCU);
     }
 
     /**
@@ -112,16 +112,16 @@ public class PitchBendTables {
 
     /**
      * This calculates pitch according to the formula:
-     * {@code pitchSense * max(((pitchBendValue - 0x80000000) / 0x7FFFFFFF),-1))}
+     * {@code pitchSense * max((pitchBendValue - 0x80000000) / 0x7FFFFFFF,-1))}
      * <p>
      * However, in order to not use floating point match, the formula has been
      * rearranged to:
-     * {@code max((pitchSense * (pitchBendValue - 0x80000000) / 0x7FFFFFFF), -pitchSense)}
+     * {@code max(pitchSense * (pitchBendValue - 0x80000000) / 0x7FFFFFFF, -pitchSense)}
      * <p>
      * In order to not have to use floating point math, pitch range
      * is expressed in cents.
      */
     public static long calcPitchMIDI2(long pitchBendValue, long pitchSenseCU) {
-        return max((pitchSenseCU * (pitchBendValue - 0x80000000L) / 0x7FFFFFFFL), -pitchSenseCU);
+        return max(pitchSenseCU * (pitchBendValue - 0x80000000L) / 0x7FFFFFFFL, -pitchSenseCU);
     }
 }
