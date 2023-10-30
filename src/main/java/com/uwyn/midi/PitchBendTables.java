@@ -36,7 +36,7 @@ public class PitchBendTables {
 
             content.append("Pitch Offset," +
                 "Pitch Bend,Pitch Bend Hex,Delta Pitch Bend," +
-                "Linear Pitch Offset,Linear Pitch Offset Delta,Piecewise Pitch Offset,Piecewise Pitch Offset Delta,\n");
+                "Linear Pitch Offset,Linear Pitch Offset Delta,Piecewise Pitch Offset,Piecewise Pitch Offset Delta\n");
         }
 
         private final long rangeCu;

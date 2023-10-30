@@ -1,4 +1,4 @@
-Pitch Offset,Pitch Bend,Pitch Bend Hex,Delta Pitch Bend,Linear Pitch Offset,Linear Pitch Offset Delta,Piecewise Pitch Offset,Piecewise Pitch Offset Delta,
+Pitch Offset,Pitch Bend,Pitch Bend Hex,Delta Pitch Bend,Linear Pitch Offset,Linear Pitch Offset Delta,Piecewise Pitch Offset,Piecewise Pitch Offset Delta
 -1200,0,"0x0000",0,-1200.000,0.000,-1200.000,0.000
 -1199,7,"0x0007",7,-1199.121,0.121,-1198.975,-0.025
 -1198,14,"0x000E",7,-1198.095,0.095,-1197.949,-0.051
