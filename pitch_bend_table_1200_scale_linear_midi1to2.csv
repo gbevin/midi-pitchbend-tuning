@@ -2401,3 +2401,4 @@ Pitch Offset,Pitch Bend,Pitch Bend Hex,Delta Pitch Bend,Linear Pitch Offset,Line
 1199,4293394239,"0xFFE7FF3F",1835232,1199.121,-0.121,1199.121,-0.121
 1200,4294967295,"0xFFFFFFFF",1573056,1200.000,0.000,1200.000,0.000
 "Max Deviation",,,1835233,,0.145,,0.145
+"Average Deviation",,,1788824.363,,0.061,,0.061

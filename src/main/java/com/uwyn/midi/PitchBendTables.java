@@ -47,6 +47,10 @@ public class PitchBendTables {
         private long maxPitchBendDeviation = 0;
         private double maxLinearOffsetDeviation = 0.0;
         private double maxPiecewiseOffsetDeviation = 0.0;
+        private long averageCount = 0;
+        private double averagePitchBendDeviation = 0.0;
+        private double averageLinearOffsetDeviation = 0.0;
+        private double averagePiecewiseOffsetDeviation = 0.0;
 
         void writeCsvFile()
         throws FileUtilsErrorException {
@@ -63,6 +67,19 @@ public class PitchBendTables {
             output.append(SEPARATOR);
             output.append(SEPARATOR);
             output.append(String.format("%.3f", maxPiecewiseOffsetDeviation));
+            output.append("\n");
+
+            output.append("\"Average Deviation\"");
+            output.append(SEPARATOR);
+            output.append(SEPARATOR);
+            output.append(SEPARATOR);
+            output.append(String.format("%.3f", averagePitchBendDeviation / averageCount));
+            output.append(SEPARATOR);
+            output.append(SEPARATOR);
+            output.append(String.format("%.3f", averageLinearOffsetDeviation / averageCount));
+            output.append(SEPARATOR);
+            output.append(SEPARATOR);
+            output.append(String.format("%.3f", averagePiecewiseOffsetDeviation / averageCount));
             output.append("\n");
 
             FileUtils.writeString(output.toString(), new File(FILE_PREFIX + rangeCu + "_" + identifier + FILE_EXTENSION));
@@ -94,6 +111,10 @@ public class PitchBendTables {
             maxPitchBendDeviation = Math.max(maxPitchBendDeviation, Math.abs(pitch_bend_delta));
             maxLinearOffsetDeviation = Math.max(maxLinearOffsetDeviation, Math.abs(linear_offset_delta));
             maxPiecewiseOffsetDeviation = Math.max(maxPiecewiseOffsetDeviation, Math.abs(piecewise_offset_delta));
+            averageCount += 1;
+            averagePitchBendDeviation += Math.abs(pitch_bend_delta);
+            averageLinearOffsetDeviation += Math.abs(linear_offset_delta);
+            averagePiecewiseOffsetDeviation += Math.abs(piecewise_offset_delta);
 
             lastPitchBend = pitchBend;
         }
