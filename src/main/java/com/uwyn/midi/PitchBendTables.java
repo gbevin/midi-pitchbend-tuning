@@ -131,10 +131,13 @@ public class PitchBendTables {
         var scale_piecewise_midi1to2 = new PitchBendTable(rangeCU, "scale_piecewise_midi1to2");
         var scale_piecewise_midi1to2to1 = new PitchBendTable(rangeCU, "scale_piecewise_midi1to2to1");
         var scale_piecewise_midi2to1 = new PitchBendTable(rangeCU, "scale_piecewise_midi2to1");
+        var mapshift_linear_midi1to2 = new PitchBendTable(rangeCU, "mapshift_linear_midi1to2");
+        var mapshift_linear_midi1to2to1 = new PitchBendTable(rangeCU, "mapshift_linear_midi1to2to1");
 
         var tables = List.of(linear_midi1, piecewise_midi1, linear_midi2, piecewise_midi2,
             scale_linear_midi1to2, scale_linear_midi1to2to1, scale_linear_midi2to1,
-            scale_piecewise_midi1to2, scale_piecewise_midi1to2to1, scale_piecewise_midi2to1);
+            scale_piecewise_midi1to2, scale_piecewise_midi1to2to1, scale_piecewise_midi2to1,
+            mapshift_linear_midi1to2, mapshift_linear_midi1to2to1);
 
         for (long offset_cu = -rangeCU; offset_cu <= rangeCU; ++offset_cu) {
             long linear_pitch_bend1 = calcLinearPitchBendMIDI1(offset_cu, rangeCU);
@@ -196,6 +199,18 @@ public class PitchBendTables {
                 piecewise_pitch_bend_scaled21,
                 calcLinearPitchMIDI1(piecewise_pitch_bend_scaled21, rangeCU),
                 calcPiecewisePitchMIDI1(piecewise_pitch_bend_scaled21, rangeCU));
+
+            long linear_pitch_bend_mapshift12 = mapShift14To32(linear_pitch_bend1);
+            mapshift_linear_midi1to2.append(offset_cu,
+                linear_pitch_bend_mapshift12,
+                calcLinearPitchMIDI2(linear_pitch_bend_mapshift12, rangeCU),
+                calcPiecewisePitchMIDI2(linear_pitch_bend_mapshift12, rangeCU));
+
+            long linear_pitch_bend_mapshift121 = scaleDown(mapShift14To32(linear_pitch_bend1), 32, 14);
+            mapshift_linear_midi1to2to1.append(offset_cu,
+                linear_pitch_bend_mapshift121,
+                calcLinearPitchMIDI1(linear_pitch_bend_mapshift121, rangeCU),
+                calcPiecewisePitchMIDI1(linear_pitch_bend_mapshift121, rangeCU));
         }
 
         return tables;
@@ -326,6 +341,19 @@ public class PitchBendTables {
             return pitchSenseCU * (pitchBendValue - 0x80000000L) / 0x80000000L;
         }
         return pitchSenseCU * (pitchBendValue - 0x80000000L) / 0x7FFFFFFFL;
+    }
+
+    /**
+     * This converts 14 bit MIDI pitch bend to 32 bit MIDI pitch bend by
+     * mapping 0x3FFFL to 0xFFFFFFFFL and using a simple leftward
+     * bitshift of 18 for everything else.
+     */
+    public static long mapShift14To32(long srcVal) {
+        if (srcVal >= 0x3FFFL) {
+            return 0xFFFFFFFFL;
+        }
+
+        return srcVal << 18;
     }
 
     /*
