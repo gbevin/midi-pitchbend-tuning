@@ -10,8 +10,7 @@ import rife.tools.exceptions.FileUtilsErrorException;
 import java.io.File;
 import java.util.List;
 
-import static java.lang.Math.max;
-import static java.lang.Math.min;
+import static java.lang.Math.*;
 
 public class PitchBendTables {
     public final static String FILE_PREFIX = "pitch_bend_table_";
@@ -122,6 +121,7 @@ public class PitchBendTables {
 
     private static List<PitchBendTable> pitchBendTablesFor(long rangeCU) {
         var linear_midi1 = new PitchBendTable(rangeCU, "linear_midi1");
+        var rounded_linear_midi1 = new PitchBendTable(rangeCU, "rounded_linear_midi1");
         var piecewise_midi1 = new PitchBendTable(rangeCU, "piecewise_midi1");
         var linear_midi2 = new PitchBendTable(rangeCU, "linear_midi2");
         var piecewise_midi2 = new PitchBendTable(rangeCU, "piecewise_midi2");
@@ -132,7 +132,7 @@ public class PitchBendTables {
         var scale_piecewise_midi1to2to1 = new PitchBendTable(rangeCU, "scale_piecewise_midi1to2to1");
         var scale_piecewise_midi2to1 = new PitchBendTable(rangeCU, "scale_piecewise_midi2to1");
 
-        var tables = List.of(linear_midi1, piecewise_midi1, linear_midi2, piecewise_midi2,
+        var tables = List.of(linear_midi1, rounded_linear_midi1, piecewise_midi1, linear_midi2, piecewise_midi2,
             scale_linear_midi1to2, scale_linear_midi1to2to1, scale_linear_midi2to1,
             scale_piecewise_midi1to2, scale_piecewise_midi1to2to1, scale_piecewise_midi2to1);
 
@@ -142,6 +142,12 @@ public class PitchBendTables {
                 linear_pitch_bend1,
                 calcLinearPitchMIDI1(linear_pitch_bend1, rangeCU),
                 calcPiecewisePitchMIDI1(linear_pitch_bend1, rangeCU));
+
+            long rounded_linear_pitch_bend1 = calcRoundedLinearPitchBendMIDI1(offset_cu, rangeCU);
+            rounded_linear_midi1.append(offset_cu,
+                linear_pitch_bend1,
+                calcLinearPitchMIDI1(rounded_linear_pitch_bend1, rangeCU),
+                calcPiecewisePitchMIDI1(rounded_linear_pitch_bend1, rangeCU));
 
             long piecewise_pitch_bend1 = calcPiecewisePitchBendMIDI1(offset_cu, rangeCU);
             piecewise_midi1.append(offset_cu,
@@ -215,6 +221,19 @@ public class PitchBendTables {
      */
     public static long calcLinearPitchBendMIDI1(long pitchOffsetCU, long pitchSenseCU) {
         return min((pitchOffsetCU * 0x2000L / pitchSenseCU) + 0x2000L, 0x3FFFL);
+    }
+
+    /**
+     * This calculates pitch bend according to the formula:
+     * {@code min(round(pitchOffset * 0x2000 / pitchSense) + 0x2000, 0x3FFF))
+     * <p>
+     *
+     * @param pitchOffsetCU the pitch offset in cents
+     * @param pitchSenseCU  the pitch sensitivity in cents
+     * @return the pitch bend value
+     */
+    public static long calcRoundedLinearPitchBendMIDI1(double pitchOffsetCU, double pitchSenseCU) {
+        return min(round(pitchOffsetCU * 0x2000L / pitchSenseCU) + 0x2000L, 0x3FFFL);
     }
 
     /**
